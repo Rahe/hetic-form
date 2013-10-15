@@ -61,6 +61,15 @@ function hetic_form_process_form() {
 		$hetic_form_messages .= 'Vous devez remplir votre prénom<br/>';
 	}
 
+	// on vérifie que la catégorie a été choisie
+	if( !isset( $_POST['hetic_form_category'] ) || empty( $_POST['hetic_form_category'] ) ) {
+		$hetic_form_messages .= 'Vous devez choisir un type de message<br/>';
+	} else {
+		if( !term_exists( $_POST['hetic_form_category'], 'category' ) ) {
+			$hetic_form_messages .= 'Vous devez choisir un type de message valide<br/>';
+		}
+	}
+
 	// S'il y a des messages à afficher, alors on ne continue pas.
 	if( !empty( $hetic_form_messages ) ) {
 		return false;
@@ -85,6 +94,9 @@ function hetic_form_process_form() {
 
 	// On insère un champs personnalisé, ici l'ip de la personne
 	update_post_meta( $inserted, 'ip', $_SERVER['REMOTE_ADDR'] );
+
+	// On ajoute le terme au post, on vérifie que l'on ait un id
+	wp_set_object_terms( $inserted, absint( $_POST['hetic_form_category'] ), 'category' );
 
 	return true;
 }
