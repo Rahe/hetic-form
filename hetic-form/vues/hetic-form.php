@@ -10,11 +10,11 @@
 		<legend>Les informations personelles</legend>
 		<p>
 			<label for="hetic_form_name">Nom *: </label>
-			<input type="text" id="hetic_form_name" value="<?php echo ( isset( $_POST['hetic_form_name'] ) ) ? $_POST['hetic_form_name'] : '' ; ?>" name="hetic_form_name" >
+			<input type="text" id="hetic_form_name" value="<?php echo ( isset( $_POST['hetic_form_name'] ) ) ? esc_attr( $_POST['hetic_form_name'] ) : '' ; ?>" name="hetic_form_name" >
 		</p>
 		<p>
 			<label for="hetic_form_firstname">Prénom *: </label>
-			<input type="text" id="hetic_form_firstname" value="<?php echo ( isset( $_POST['hetic_form_firstname'] ) ) ? $_POST['hetic_form_firstname'] : '' ; ?>" name="hetic_form_firstname" >
+			<input type="text" id="hetic_form_firstname" value="<?php echo ( isset( $_POST['hetic_form_firstname'] ) ) ? esc_attr( $_POST['hetic_form_firstname'] ) : '' ; ?>" name="hetic_form_firstname" >
 		</p>
 		<p>
 			<label for="hetic_form_category" >Type </label>
@@ -31,5 +31,6 @@
 		<p>
 			<input type="submit" value="Envoyer !" name="hetic_form_submit" />
 		</p>
+		<?php wp_nonce_field( 'hetic_form_submit' ); ?>
 	</fieldset>
 </form>

@@ -49,7 +49,13 @@ function hetic_form_process_form() {
 	global $hetic_form_messages;
 
 	// Si on a pas soumis le formulaire alors on ne commence pas à traiter les informations
-	if( !isset( $_POST['hetic_form_submit'] ) ) {
+	if( !isset( $_POST['hetic_form_submit'] ) || !isset( $_POST['_wpnonce'] ) ) {
+		return false;
+	}
+
+	// On vérifie le nonce pour être sûr que c'est bien ajouté
+	if( !wp_verify_nonce( $_POST['_wpnonce'], 'hetic_form_submit' ) ) {
+		$hetic_form_messages .= 'Erreur de sécurité, veuillez retenter d\'envoyer le formulaire.<br/>';
 		return false;
 	}
 
@@ -90,8 +96,8 @@ function hetic_form_process_form() {
 
 	// on insère les données
 	$inserted = wp_insert_post( array(
-		'post_title' => $_POST['hetic_form_name'],
-		'post_content' => $_POST['hetic_form_firstname'],
+		'post_title' => sanitize_text_field( $_POST['hetic_form_name'] ),
+		'post_content' => wp_kses( $_POST['hetic_form_firstname'] ),
 		'post_type' => 'post',
 		'post_status' => 'pending'
 	) );
@@ -111,16 +117,13 @@ function hetic_form_process_form() {
 	// On ajoute le terme au post, on vérifie que l'on ait un id
 	wp_set_object_terms( $inserted, absint( $_POST['hetic_form_category'] ), 'category' );
 
-	// Si on veut upload le fichier, on y passe !
-	if( $upload_file === true ) {
-		// On ajoute les librairies de WP qui correpondent à l'upload de fichier
-		include( ABSPATH.'/wp-admin/includes/file.php' );
-		include( ABSPATH.'/wp-admin/includes/image.php' );
-		include( ABSPATH.'/wp-admin/includes/media.php' );
+	// On ajoute les librairies de WP qui correpondent à l'upload de fichier
+	include( ABSPATH.'/wp-admin/includes/file.php' );
+	include( ABSPATH.'/wp-admin/includes/image.php' );
+	include( ABSPATH.'/wp-admin/includes/media.php' );
 
-		// On télécharge l'image et on l'associe tout de suite à l'article inséré plus tôt
-		media_handle_upload( "image", $inserted  );
-	}
+	// On télécharge l'image et on l'associe tout de suite à l'article inséré plus tôt
+	media_handle_upload( "image", $inserted  );
 
 	return true;
 }
