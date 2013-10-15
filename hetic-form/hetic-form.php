@@ -23,7 +23,7 @@ define('HETIC_FORM_DIR', plugin_dir_path( __FILE__ ));
 
 add_action( 'plugins_loaded', 'hetic_form_init' );
 
-function hetif_form_init() {
+function hetic_form_init() {
 	// On ajoute le shortcode
 	add_shortcode( 'hetic-form', 'hetic_form_shortcode' );
 
@@ -42,7 +42,7 @@ function hetic_form_shortcode() {
 	include_once( HETIC_FORM_DIR.'/vues/hetic-form.php' );
 
 	// On récupère le texte et on le retourne !
-	return ob_get_flush();
+	return ob_get_clean();
 }
 
 function hetic_form_process_form() {
@@ -65,7 +65,7 @@ function hetic_form_process_form() {
 	if( !isset( $_POST['hetic_form_category'] ) || empty( $_POST['hetic_form_category'] ) ) {
 		$hetic_form_messages .= 'Vous devez choisir un type de message<br/>';
 	} else {
-		if( !term_exists( $_POST['hetic_form_category'], 'category' ) ) {
+		if( !term_exists( absint( $_POST['hetic_form_category'] ), 'category' ) ) {
 			$hetic_form_messages .= 'Vous devez choisir un type de message valide<br/>';
 		}
 	}
