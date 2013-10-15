@@ -81,7 +81,10 @@ function hetic_form_process_form() {
 	}
 
 	// On affiche un message de succès di possible
-	$hetic_form_messages = 'Votre demande a été correctement rengistrée';
+	$hetic_form_messages = 'Votre demande a été correctement enregistrée';
+
+	// On insère un champs personnalisé, ici l'ip de la personne
+	update_post_meta( $inserted, 'ip', $_SERVER['REMOTE_ADDR'] );
 
 	return true;
 }
