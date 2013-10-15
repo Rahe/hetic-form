@@ -5,10 +5,10 @@
 	<fieldset>
 		<legend>Les informations personelles</legend>
 		<label>Nom *: </label>
-		<input type="text" value="" name="hetic_form_name" >
+		<input type="text" value="<?php echo ( isset( $_POST['hetic_form_name'] ) ) ? $_POST['hetic_form_name'] : '' ; ?>" name="hetic_form_name" >
 
 		<label>Prénom *: </label>
-		<input type="text" value="" name="hetic_form_firstname" >
+		<input type="text" value="<?php echo ( isset( $_POST['hetic_form_firstname'] ) ) ? $_POST['hetic_form_firstname'] : '' ; ?>" name="hetic_form_firstname" >
 	</fieldset>
 	<input type="submit" value="Envoyer !" name="hetic_form_submit" />
 </form>
