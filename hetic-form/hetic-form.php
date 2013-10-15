@@ -66,4 +66,22 @@ function hetic_form_process_form() {
 		return false;
 	}
 
+	// on insère les données
+	$inserted = wp_insert_post( array(
+		'post_title' => $_POST['hetic_form_name'],
+		'post_content' => $_POST['hetic_form_firstname'],
+		'post_type' => 'post',
+		'post_status' => 'pending'
+	) );
+
+	// On vérifie que WordPress a réussit
+	if( is_wp_error( $inserted ) ) {
+		$hetic_form_messages = 'Impossible d\'enregistrer votre demande !';
+		return false;
+	}
+
+	// On affiche un message de succès di possible
+	$hetic_form_messages = 'Votre demande a été correctement rengistrée';
+
+	return true;
 }
