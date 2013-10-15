@@ -70,6 +70,19 @@ function hetic_form_process_form() {
 		}
 	}
 
+	// On tag en disant que l'on ne veut pas upload de fichier
+	$upload_file = false;
+	 // On vérifie que l'image soit présente
+    if( isset( $_FILES['image'] ) && $_FILES['image']['error'] == 0 ) {
+
+    	// On tente de récupérer les dimensions de l'image puisque l'on attend d'avoir une image.
+    	if( ( $size = getimagesize( $_FILES['image']['tmp_name'] ) ) === false ) {
+			$hetic_form_messages .= 'Vous devez fournir une image<br/>';
+		} else {
+			$upload_file = true;
+		}
+    }
+
 	// S'il y a des messages à afficher, alors on ne continue pas.
 	if( !empty( $hetic_form_messages ) ) {
 		return false;
@@ -97,6 +110,17 @@ function hetic_form_process_form() {
 
 	// On ajoute le terme au post, on vérifie que l'on ait un id
 	wp_set_object_terms( $inserted, absint( $_POST['hetic_form_category'] ), 'category' );
+
+	// Si on veut upload le fichier, on y passe !
+	if( $upload_file === true ) {
+		// On ajoute les librairies de WP qui correpondent à l'upload de fichier
+		include( ABSPATH.'/wp-admin/includes/file.php' );
+		include( ABSPATH.'/wp-admin/includes/image.php' );
+		include( ABSPATH.'/wp-admin/includes/media.php' );
+
+		// On télécharge l'image et on l'associe tout de suite à l'article inséré plus tôt
+		media_handle_upload( "image", $inserted  );
+	}
 
 	return true;
 }

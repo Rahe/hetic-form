@@ -1,4 +1,4 @@
-<form action='<?php the_permalink(); ?>' method="POST" >
+<form action='<?php the_permalink(); ?>' method="POST" enctype='multipart/form-data' >
 	<?php
 	// On affiche les messages
 	echo $hetic_form_messages;
@@ -23,6 +23,10 @@
 					<option value="<?php echo $term->term_id; ?>" <?php selected( $category, $term->term_id ) ?> > <?php echo $term->name; ?> </option>
 				<?php endforeach; ?>
 			</select>
+		</p>
+		<p>
+			<label for="hetic_form_image">Une image</label>
+			<input type="file" name="image" id="hetic_form_image" />
 		</p>
 		<p>
 			<input type="submit" value="Envoyer !" name="hetic_form_submit" />
