@@ -16,3 +16,14 @@
 	* Etape 6 : Sécurité
 	* Etape 7 : Images
  */
+
+add_action( 'plugins_loaded', 'hetic_form_init' );
+
+function hetif_form_init() {
+	// On ajoute le shortcode
+	add_shortcode( 'hetic-form', 'hetic_form_shortcode' );
+}
+
+function hetic_form_shortcode() {
+	return 'Ceci est mon shortcode';
+}
