@@ -122,8 +122,12 @@ function hetic_form_process_form() {
 	include( ABSPATH.'/wp-admin/includes/image.php' );
 	include( ABSPATH.'/wp-admin/includes/media.php' );
 
-	// On télécharge l'image et on l'associe tout de suite à l'article inséré plus tôt
-	media_handle_upload( "image", $inserted  );
+    // On télécharge l'image et on l'associe tout de suite à l'article inséré plus tôt
+    $thumb_id = media_handle_upload( "image", $inserted  );
+    if ( (int) $thumb_id <= 0 ) {
+        return false;
+    }
+    set_post_thumbnail( $inserted , $thumb_id);
 
 	return true;
 }
